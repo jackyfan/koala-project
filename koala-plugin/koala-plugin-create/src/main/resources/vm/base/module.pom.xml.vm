@@ -64,7 +64,8 @@
         </dependency>  
         <dependency> 
             <groupId>org.openkoala.koalacommons</groupId>  
-            <artifactId>koala-commons-domain</artifactId> 
+            <artifactId>koala-commons-domain</artifactId>
+            <version>4.0.0</version>
         </dependency>
   <!-- 加入CONF依赖 -->
   <dependency>

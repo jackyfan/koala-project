@@ -28,11 +28,7 @@ import org.openkoala.bpm.application.vo.TaskChoice;
 import org.openkoala.bpm.application.vo.TaskVO;
 import org.openkoala.bpm.infra.ElementFilter;
 import org.openkoala.bpm.infra.XmlParseUtil;
-import org.openkoala.bpm.processdyna.core.DynaProcessForm;
-import org.openkoala.bpm.processdyna.core.DynaProcessHistoryValue;
-import org.openkoala.bpm.processdyna.core.DynaProcessKey;
-import org.openkoala.bpm.processdyna.core.DynaProcessTemplate;
-import org.openkoala.bpm.processdyna.core.DynaProcessValue;
+import org.openkoala.bpm.processdyna.core.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named("businessSupportApplication")

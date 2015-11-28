@@ -15,21 +15,6 @@
  */
 package org.openkoala.koala.monitor.application;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.inject.Named;
-import javax.interceptor.Interceptors;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.dayatang.domain.InstanceFactory;
@@ -43,16 +28,17 @@ import org.openkoala.koala.monitor.domain.JdbcStatementDetails;
 import org.openkoala.koala.monitor.domain.MethodDetails;
 import org.openkoala.koala.monitor.domain.MonitorNode;
 import org.openkoala.koala.monitor.domain.MonitorNode.MonitorComponent;
-import org.openkoala.koala.monitor.model.CountVo;
-import org.openkoala.koala.monitor.model.HttpDetailsVo;
-import org.openkoala.koala.monitor.model.JdbcStatementDetailsVo;
-import org.openkoala.koala.monitor.model.MainStatVo;
-import org.openkoala.koala.monitor.model.MethodDetailsVo;
+import org.openkoala.koala.monitor.model.*;
 import org.openkoala.koala.monitor.service.MonitorDataService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Named;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * 功能描述：<br />
@@ -127,7 +113,7 @@ private QueryChannelService queryChannel;
 				httpDetailsVo.getEndTime()};
 //		Object[] params = new Object[]{httpDetailsVo.getSystem(), httpDetailsVo.getBeginTimeStr(), 
 //				httpDetailsVo.getEndTimeStr()};
-		Page<HttpDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		org.dayatang.utils.Page<HttpDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
 		
 		List<HttpDetailsVo> list = KoalaBeanUtils.getNewList(pageEntity.getData(), HttpDetailsVo.class);
 		
@@ -143,7 +129,7 @@ private QueryChannelService queryChannel;
 		String queryStr = "select method,count(*) from MethodDetails where nodeId = ? and beginTime>=? and beginTime<?  group by method order by count(*) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
 				mainStatVo.getEndTime()};
-		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		org.dayatang.utils.Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
 		List<CountVo> list = this.turnToCountVoList(pageEntity.getData());
 		
 		return new Page<CountVo>(currentPage, pageEntity.getResultCount(), pageSize, list);
@@ -155,7 +141,7 @@ private QueryChannelService queryChannel;
 		String queryStr = " select method,avg(timeConsume) from MethodDetails where nodeId = ? and beginTime>=? and beginTime<? group by method order by avg(timeConsume) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
 				mainStatVo.getEndTime()};
-		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		org.dayatang.utils.Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
 	
 		List<CountVo> list = this.turnToCountVoAvgTimeConsumeList(pageEntity.getData());
 		
@@ -169,7 +155,7 @@ private QueryChannelService queryChannel;
 				" and nodeId = ? and beginTime>=? and beginTime<? group by method order by count(successed) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
 				mainStatVo.getEndTime()};
-		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setPage(currentPage, pageSize).setParameters(Arrays.asList(params)).pagedList();
+		org.dayatang.utils.Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setPage(currentPage, pageSize).setParameters(Arrays.asList(params)).pagedList();
 		
 		List<CountVo> list = this.turnToCountVoExceptionList(pageEntity.getData());
 		
@@ -214,7 +200,7 @@ private QueryChannelService queryChannel;
 				jpql.append(" ").append(methodDetailsVo.getSortorder());
 			}
 		}
-		Page<MethodDetails> pageEntity = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(params).setPage(currentPage, pageSize).pagedList();
+		org.dayatang.utils.Page<MethodDetails> pageEntity = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(params).setPage(currentPage, pageSize).pagedList();
 	    List<MethodDetailsVo> list = KoalaBeanUtils.getNewList(pageEntity.getData(), MethodDetailsVo.class);
 		
 		return new Page<MethodDetailsVo>(currentPage, pageEntity.getResultCount(), pageSize, list);
@@ -227,8 +213,8 @@ private QueryChannelService queryChannel;
 		String queryStr = " select a from JdbcStatementDetails a where a.jdbcConn.id in (select b.id from JdbcConnDetails b " +
 				" where b.threadKey=(select c.threadKey from MethodDetails c where c.id=:methodId )) order by " +
 				jdbcStatementDetailsVo.getSortname() + " " + jdbcStatementDetailsVo.getSortorder();
-		
-		Page<JdbcStatementDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).addParameter("methodId", jdbcStatementDetailsVo.getMethodId()).setPage(currentPage, pageSize).pagedList();
+
+		org.dayatang.utils.Page<JdbcStatementDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).addParameter("methodId", jdbcStatementDetailsVo.getMethodId()).setPage(currentPage, pageSize).pagedList();
 		
 		List<JdbcStatementDetailsVo> list = KoalaBeanUtils.getNewList(pageEntity.getData(), JdbcStatementDetailsVo.class);
 		return new Page<JdbcStatementDetailsVo>(currentPage, pageEntity.getResultCount(), pageSize, list);

@@ -680,7 +680,7 @@
             <dependency>
                 <groupId>org.openkoala.koalacommons</groupId>
                 <artifactId>koala-commons-cache</artifactId>
-                <version>${framework.version}</version>
+                <version>4.0.0</version>
             </dependency>
 
             <dependency>

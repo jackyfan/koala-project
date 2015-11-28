@@ -1,20 +1,13 @@
 package org.openkoala.organisation.application.impl;
 
+import org.openkoala.organisation.application.OrganizationApplication;
+import org.openkoala.organisation.core.domain.*;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Named;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import javax.inject.Named;
-
-import org.openkoala.organisation.application.OrganizationApplication;
-import org.openkoala.organisation.core.domain.Company;
-import org.openkoala.organisation.core.domain.Department;
-import org.openkoala.organisation.core.domain.Employee;
-import org.openkoala.organisation.core.domain.EmployeePostHolding;
-import org.openkoala.organisation.core.domain.Organization;
-import org.openkoala.organisation.core.domain.OrganizationAbstractEntity;
-import org.openkoala.organisation.core.domain.OrganizationLineManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 组织机构应用实现层类
@@ -73,6 +66,14 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 	@Override
 	public void updateOrganization(Organization organization) {
 		organization.update();
+	}
+
+	/**
+	 * 这个是错误的时候添加的方法
+	 */
+	@Override
+	public Object getOrganizationTree() {
+		return null;
 	}
 
 }

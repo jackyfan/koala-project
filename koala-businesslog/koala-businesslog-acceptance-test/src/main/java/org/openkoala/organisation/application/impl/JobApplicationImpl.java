@@ -35,7 +35,7 @@ public class JobApplicationImpl implements JobApplication {
 	}
 
 	@Override
-	public Page<Job> pagingQueryJobs(Job jobSearchExample, int currentPage, int pageSize) {
+	public org.dayatang.utils.Page<Job> pagingQueryJobs(Job jobSearchExample, int currentPage, int pageSize) {
 		List<Object> conditionVals = new ArrayList<Object>();
 
 		StringBuilder jpql = new StringBuilder("select _job from Job _job where _job.createDate <= ? and _job.terminateDate > ?");
