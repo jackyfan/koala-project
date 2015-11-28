@@ -749,13 +749,13 @@
 
             <dependency>
                 <groupId>org.openkoala.monitor</groupId>
-                <artifactId>koala-jmonitor-application</artifactId>
+                <artifactId>koala-monitor-application</artifactId>
                 <version>${koala.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.openkoala.monitor</groupId>
-                <artifactId>koala-jmonitor-applicationImpl</artifactId>
+                <artifactId>koala-monitor-applicationImpl</artifactId>
                 <version>${koala.version}</version>
             </dependency>
 

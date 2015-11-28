@@ -33,7 +33,7 @@ public class EJBSrcCopy {
 	private static final String SECURITY_MODULE_IMPL = "koala-security-applicationImpl";
 	private static final String SECURITY_MODULE_CORE = "koala-security-core";
 
-	private static final String MONITOR_CORE = "koala-jmonitor-core";
+	private static final String MONITOR_CORE = "koala-monitor-core";
 
 	private static final String QUERY_CORE = "koala-gqc-controller";
 	

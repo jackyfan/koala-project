@@ -12,13 +12,13 @@
 	<name>${project.artifactId}</name>
 
 	<modules>
-		<module>koala-jmonitor-domain</module>
-		<module>koala-jmonitor-application</module>
-		<module>koala-jmonitor-applicationImpl</module>
-		<module>koala-jmonitor-mina</module>
-		<module>koala-jmonitor-core</module>
-		<module>koala-jmonitor-model</module>
-		<!--<module>koala-jmonitor-web-mvc</module>-->
+		<module>koala-monitor-domain</module>
+		<module>koala-monitor-application</module>
+		<module>koala-monitor-applicationImpl</module>
+		<module>koala-monitor-mina</module>
+		<module>koala-monitor-core</module>
+		<module>koala-monitor-model</module>
+		<!--<module>koala-monitor-web-mvc</module>-->
 	</modules>
 	
 	<profiles>
