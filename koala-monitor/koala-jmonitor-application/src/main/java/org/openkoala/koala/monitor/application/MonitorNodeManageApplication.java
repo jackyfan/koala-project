@@ -15,16 +15,11 @@
  */
 package org.openkoala.koala.monitor.application;
 
+import org.dayatang.querychannel.Page;
+import org.openkoala.koala.monitor.model.*;
+
 import java.util.List;
 import java.util.Map;
-
-import org.dayatang.querychannel.Page;
-import org.openkoala.koala.monitor.model.GeneralMonitorStatusVo;
-import org.openkoala.koala.monitor.model.JdbcPoolStatusVo;
-import org.openkoala.koala.monitor.model.MonitorComponentVo;
-import org.openkoala.koala.monitor.model.MonitorNodeVo;
-import org.openkoala.koala.monitor.model.MonitorWarnInfoVo;
-import org.openkoala.koala.monitor.model.ServerStatusVo;
 
 /**
  * 功能描述：监控节点管理应用接口<br />

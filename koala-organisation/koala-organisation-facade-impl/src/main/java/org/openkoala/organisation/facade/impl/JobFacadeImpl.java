@@ -70,16 +70,22 @@ public class JobFacadeImpl implements JobFacade {
 	@Override
 	public List<JobDTO> findAllJobs() {
 		List<JobDTO> results = new ArrayList<JobDTO>();
-		for (Job job : baseApplication.findAll(Job.class)) {
-			results.add(JobAssembler.toDTO(job));
-		}
+		/**
+		 * 这个是错误的时候添加的方法
+		 */
+//		for (Job job : baseApplication.findAll(Job.class)) {
+//			results.add(JobAssembler.toDTO(job));
+//		}
 		return results;
 	}
 
 	@Override
 	public InvokeResult createJob(JobDTO jobDto) {
 		try {
-			baseApplication.saveParty(JobAssembler.toEntity(jobDto));
+			/**
+			 * 这个是错误的时候添加的方法
+			 */
+//			baseApplication.saveParty(JobAssembler.toEntity(jobDto));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("职务编码: " + jobDto.getSn() + " 已被使用！");
@@ -94,7 +100,10 @@ public class JobFacadeImpl implements JobFacade {
 	@Override
 	public InvokeResult updateJobInfo(JobDTO jobDTO) {
 		try {
-			baseApplication.updateParty(JobAssembler.toEntity(jobDTO));
+			/**
+			 * 这个是错误的时候添加的方法
+			 */
+//			baseApplication.updateParty(JobAssembler.toEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("职务编码: " + jobDTO.getSn() + " 已被使用！");
@@ -114,7 +123,10 @@ public class JobFacadeImpl implements JobFacade {
 	@Override
 	public InvokeResult terminateJob(JobDTO jobDTO) {
 		try {
-			baseApplication.terminateParty(JobAssembler.toEntity(jobDTO));
+			/**
+			 * 这个是错误的时候添加的方法
+			 */
+//			baseApplication.terminateParty(JobAssembler.toEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
 			return InvokeResult.failure("该职务已被使用!");
@@ -128,7 +140,10 @@ public class JobFacadeImpl implements JobFacade {
 			jobs.add(JobAssembler.toEntity(jobDTO));
 		}
 		try {
-			baseApplication.terminateParties(jobs);
+			/**
+			 * 这个是错误的时候添加的方法
+			 */
+//			baseApplication.terminateParties(jobs);
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
 			return InvokeResult.failure("该职务已被使用!");

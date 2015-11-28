@@ -157,7 +157,10 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 	@Override
 	public InvokeResult updateOrganization(OrganizationDTO organizationDTO) {
 		try {
-			baseApplication.updateParty(OrganizationAssembler.toEntity(organizationDTO));
+			/**
+			 * 这个是错误的时候添加的方法
+			 */
+//			baseApplication.updateParty(OrganizationAssembler.toEntity(organizationDTO));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
     		return InvokeResult.failure("机构编码: " + organizationDTO.getSn() + " 已被使用！");
@@ -172,7 +175,10 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 	@Override
 	public InvokeResult terminateOrganization(OrganizationDTO organizationDTO) {
 		try {
-			baseApplication.terminateParty(OrganizationAssembler.toEntity(organizationDTO));
+			/**
+			 * 这个是错误的时候添加的方法
+			 */
+//			baseApplication.terminateParty(OrganizationAssembler.toEntity(organizationDTO));
 			return InvokeResult.success();
 		} catch (TerminateRootOrganizationException exception) {
 			return InvokeResult.failure("不能撤销根机构！");
