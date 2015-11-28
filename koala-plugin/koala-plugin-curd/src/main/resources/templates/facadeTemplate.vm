@@ -1,0 +1,48 @@
+#set($package = ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})})
+package ${facadeClass.packageName.replaceAll(".dto","")};
+#set($domainClass = ${facadeClass.name.substring(0, ${facadeClass.name.indexOf("Facade")})})
+#set($variableName = ${domainClass.substring(0, 1).toLowerCase()} + ${domainClass.substring(1)})
+#set($currntVO = ${domainClass.concat("DTO")})
+
+import java.util.List;
+import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
+import ${dtoClass.packageName}.*;
+
+public interface ${facadeClass.name} {
+
+	public InvokeResult get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name});
+	
+	public InvokeResult creat${domainClass}(${currntVO} ${variableName});
+	
+	public InvokeResult update${domainClass}(${currntVO} ${variableName});
+	
+	public InvokeResult remove${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name});
+	
+	public InvokeResult remove${domainClass}s(${dtoClass.entityModel.singleIDFieldModel.simpleType}[] ${dtoClass.entityModel.singleIDFieldModel.name}s);
+	
+	public List<${currntVO}> findAll${domainClass}();
+	
+	public Page<${currntVO}> pageQuery${domainClass}(${currntVO} ${variableName}, int currentPage, int pageSize);
+	
+#foreach(${relation} in ${facadeClass.relations})
+	#set($relationModel = ${relation.relationModel})
+	#set($relationType = ${relationModel.type})
+	#set($entityName = ${relationModel.entityModel.name})
+	#set($relationName = ${relation.name.substring(0, 1).toUpperCase()} + ${relation.name.substring(1)})
+#if(${relationType} == "ManyToOne" || ${relationType} == "OneToOne")
+	public ${entityName}DTO find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name});
+#end
+
+#if(${relationType} == "OneToOne")
+	
+#end
+
+	#if(${relationType} == "OneToMany" || ${relationType} == "ManyToMany")
+		
+	public Page<${entityName}DTO> find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, int currentPage, int pageSize);		
+	#end
+#end
+
+}
+

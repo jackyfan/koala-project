@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openkoala.bpm</groupId>
+		<artifactId>koala-bpm</artifactId>
+		<version>4.0.0</version>
+	</parent>
+	<artifactId>koala-bpm-oss</artifactId>
+	<packaging>pom</packaging>
+	<name>koala-jbpm-oss</name>
+	<description>Koala BPM业务流程支撑系统</description>
+
+	<modules>
+		<module>koala-bpm-oss-conf</module>
+		<module>koala-bpm-oss-infra</module>
+		<module>koala-bpm-oss-core</module>
+		<module>koala-bpm-oss-application</module>
+		<module>koala-bpm-oss-applicationImpl</module>
+		<module>koala-bpm-oss-web</module>
+	</modules>
+
+</project>

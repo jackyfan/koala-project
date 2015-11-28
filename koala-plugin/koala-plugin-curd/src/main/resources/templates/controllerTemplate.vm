@@ -1,0 +1,110 @@
+#set($package = ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})})
+package ${controllerClass.packageName.replaceAll(".domain","")};
+
+import javax.inject.Inject;
+import org.springframework.web.bind.WebDataBinder;
+import java.text.SimpleDateFormat;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.annotation.InitBinder;
+import java.util.Date;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.dayatang.utils.Page;
+import ${dtoClass.packageName}.*;
+import ${dtoClass.packageName.replaceAll("dto","")}${facadeImplClass.name.replaceAll("Impl","")};
+import org.openkoala.koala.commons.InvokeResult;
+
+@Controller
+@RequestMapping("/${controllerClass.name.substring(0, 1).toUpperCase()}${controllerClass.name.substring(1, ${controllerClass.name.indexOf("Controller")})}")
+public class ${controllerClass.name} {
+	#set($applicationName = ${facadeClass.name.substring(0, 1).toLowerCase()} + ${facadeClass.name.substring(1)})
+	#set($voType = ${applicationClass.name.substring(0, ${applicationClass.name.indexOf("Application")}).concat("DTO")})
+	#set($voName = ${voType.substring(0, 1).toLowerCase()} + ${voType.substring(1)})
+	#set($domainClass = ${applicationClass.name.substring(0, ${applicationClass.name.indexOf("Application")})})
+	
+	@Inject
+	private ${facadeImplClass.name.replaceAll("Impl","")} ${applicationName};
+	
+	@ResponseBody
+	@RequestMapping("/add")
+	public InvokeResult add(${voType} ${voName}) {
+		return ${applicationName}.creat${domainClass}(${voName});
+	}
+	
+	@ResponseBody
+	@RequestMapping("/update")
+	public InvokeResult update(${voType} ${voName}) {
+		return ${applicationName}.update${domainClass}(${voName});
+	}
+	
+	@ResponseBody
+	@RequestMapping("/pageJson")
+	public Page pageJson(${voType} ${voName}, @RequestParam int page, @RequestParam int pagesize) {
+		Page<${voType}> all = ${applicationName}.pageQuery${domainClass}(${voName}, page, pagesize);
+		return all;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/delete")
+	public InvokeResult remove(@RequestParam String ${dtoClass.entityModel.singleIDFieldModel.name}s) {
+		String[] value = ${dtoClass.entityModel.singleIDFieldModel.name}s.split(",");
+        ${dtoClass.entityModel.singleIDFieldModel.simpleType}[] idArrs = new ${dtoClass.entityModel.singleIDFieldModel.simpleType}[value.length];
+        for (int i = 0; i < value.length; i ++) {
+        	#if(${dtoClass.entityModel.singleIDFieldModel.simpleType} == "String")
+				idArrs[i] = value[i];
+			#end
+        	#if(${dtoClass.entityModel.singleIDFieldModel.simpleType} == "Long" )
+				idArrs[i] = Long.parseLong(value[i]);
+			#end
+			#if(${dtoClass.entityModel.singleIDFieldModel.simpleType} == "Integer" )
+				idArrs[i] = Integer.parseInt(value[i]);
+			#end
+        }
+        return ${applicationName}.remove${domainClass}s(idArrs);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/get/{${dtoClass.entityModel.singleIDFieldModel.name}}")
+	public InvokeResult get(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		return ${applicationName}.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name});
+	}
+	
+	#foreach(${relation} in ${applicationClass.relations})
+#set($relationModel = ${relation.relationModel})
+#set($relationType = ${relationModel.type})
+#set($entityName = ${relationModel.entityModel.name})
+#set($relationName = ${relation.name.substring(0, 1).toUpperCase()} + ${relation.name.substring(1)})
+#if(${relationType} == "ManyToOne" || ${relationType} == "OneToOne")
+	@ResponseBody
+	@RequestMapping("/find${relationName}By${domainClass}/{${dtoClass.entityModel.singleIDFieldModel.name}}")
+	public Map<String, Object> find${relationName}By${domainClass}(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("data", ${applicationName}.find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}));
+		return result;
+	}
+#end
+
+#if(${relationType} == "OneToMany" || ${relationType} == "ManyToMany")
+	@ResponseBody
+	@RequestMapping("/find${relationName}By${domainClass}/{${dtoClass.entityModel.singleIDFieldModel.name}}")
+	public Page find${relationName}By${domainClass}(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, @RequestParam int page, @RequestParam int pagesize) {
+		Page<${entityName}DTO> all = ${applicationName}.find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}, page, pagesize);
+		return all;
+	}		
+#end
+#end
+	
+    @InitBinder    
+    public void initBinder(WebDataBinder binder) {  
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");    
+        dateFormat.setLenient(false);    
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));    
+        //CustomDateEditor 可以换成自己定义的编辑器。  
+        //注册一个Date 类型的绑定器 。
+        binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
+    }
+	
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<XmlParse>
+    
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/application</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/bizModel</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/facade</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeModule.moduleName}/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/impl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeImplModule.moduleName}/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/infra</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/web/controller</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/web/src/main/webapp/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/src/main/webapp/</property>
+	</VelocityDirObject>
+	
+</XmlParse>

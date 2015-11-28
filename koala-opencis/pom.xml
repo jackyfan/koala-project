@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.openkoala</groupId>
+        <artifactId>koala-project</artifactId>
+        <version>4.0.0</version>
+    </parent>
+    <groupId>org.openkoala.opencis</groupId>
+    <artifactId>koala-opencis</artifactId>
+    <packaging>pom</packaging>
+    <name>koala-opencis</name>
+    <description>Koala OpenCIS集成子模块</description>
+    <modules>
+        <module>koala-opencis-svn</module>
+        <module>koala-opencis-git</module>
+        <module>koala-opencis-trac</module>
+        <module>koala-opencis-jira</module>
+        <module>koala-opencis-jenkins</module>
+        <module>koala-opencis-sonar</module>
+        <module>koala-opencis-api</module>
+        <module>koala-opencis-support</module>
+        <module>koala-opencis-github</module>
+        <module>koala-opencis-gitlab</module>
+        <module>koala-openci-platform</module>
+        <module>koala-cas-management</module>
+        <module>koala-opencis-redmine</module>
+    </modules>
+
+
+
+</project>

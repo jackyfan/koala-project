@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XmlParse>
+
+	<property name="description">Security</property>
+
+<CopyFiles>
+		<property name="srcDir">vm/other/security_web/SpringMVC/webapp/</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/webapp/
+		</property>
+	</CopyFiles>
+<CopyFiles>
+		<property name="srcDir">vm/other/security_web/SpringMVC/resources/</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/resources/
+		</property>
+	</CopyFiles>
+	
+	<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/pom.xml</property>
+		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
+		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='com.google.guava' and xmlns:artifactId='shiro-core']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>17.0</version>
+		</dependency>
+		<dependency>
+            <groupId>org.hibernate</groupId>  
+            <artifactId>hibernate-validator</artifactId>  
+        </dependency>
+	</root>
+         ]]>
+		</property>
+	</XmlAdd>
+	
+	<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/pom.xml</property>
+		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
+		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.apache.shiro' and xmlns:artifactId='shiro-core']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+	</root>
+         ]]>
+		</property>
+	</XmlAdd>
+	
+	<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/pom.xml</property>
+		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
+		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.apache.shiro' and xmlns:artifactId='shiro-core']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha-api</artifactId>
+			<version>${jcaptcha.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha-integration-simple-servlet</artifactId>
+			<version>${jcaptcha.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.jhlabs</groupId>
+			<artifactId>filters</artifactId>
+			<version>2.0.235-1</version>
+		</dependency>
+	</root>
+         ]]>
+		</property>
+	</XmlAdd>
+	
+	<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/resources/META-INF/spring/root.xml</property>
+		<property name="uri">http://www.springframework.org/schema/beans</property>
+		<property name="parentSearch"><![CDATA[/xmlns:beans]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:beans/xmlns:import[@resource='classpath:META-INF/spring/koala-security-http.xml']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+		    <?xml version="1.0" encoding="UTF-8"?>
+		    <root>
+				<import resource="classpath*:META-INF/spring/persistence-context.xml" />
+				<import resource="classpath:META-INF/spring/security-shiro.xml" />
+			    <import resource="classpath*:META-INF/spring/security-shared-persistence.xml" />
+			     <import resource="classpath*:META-INF/spring/security-extend.xml" />
+			</root>
+			  ]]>
+		</property>
+	</XmlAdd>
+	
+	
+	
+</XmlParse> 

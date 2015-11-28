@@ -1,0 +1,35 @@
+package ${package};
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+
+@Embeddable  
+public class ${EntityName}PK implements Serializable {  
+
+ #foreach ($column in $PrimayKeys)
+ 
+     @Column(name="$column.columnName")
+     private $column.type $column.name;
+     
+ #end
+ 
+ #foreach ($column in $PrimayKeys)
+  
+  #set($propertyName = ${column.name.substring(0, 1).toUpperCase()} + ${column.name.substring(1)})
+  
+  public $column.type get${propertyName}() {
+		return $column.name;
+  }
+  
+  public void set${propertyName}($column.type $column.name) {
+		this.$column.name = $column.name;
+  }
+#end
+
+
+  
+} 

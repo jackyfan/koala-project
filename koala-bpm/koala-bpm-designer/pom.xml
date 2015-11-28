@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openkoala.bpm</groupId>
+		<artifactId>koala-bpm</artifactId>
+		<version>4.0.0</version>
+	</parent>
+	<groupId>org.openkoala.bpm.designer</groupId>
+	<artifactId>koala-bpm-designer</artifactId>
+	<packaging>pom</packaging>
+	<name>koala-bpm-designer</name>
+	<description>Koala BPM流程设计器项目，提供WEB方式的流程设计功能</description>
+	<modules>
+		<module>koala-bpm-designer-bizmodel</module>
+		<module>koala-bpm-designer-application</module>
+		<module>koala-bpm-designer-applicationImpl</module>
+		<module>koala-bpm-designer-infra</module>
+		<module>koala-bpm-designer-web</module>
+	</modules>
+
+	<properties>
+		<gunvor.server.host>localhost</gunvor.server.host>
+		<gunvor.server.port>8080</gunvor.server.port>
+		<gunvor.server.user>admin</gunvor.server.user>
+		<gunvor.server.pwd>admin</gunvor.server.pwd>
+	</properties>
+	
+</project>
