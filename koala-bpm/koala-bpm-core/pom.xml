@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openkoala.bpm</groupId>
+		<artifactId>koala-bpm</artifactId>
+		<version>4.0.0</version>
+	</parent>
+	<groupId>org.openkoala.bpm.core</groupId>
+	<artifactId>koala-bpm-core</artifactId>
+	<packaging>pom</packaging>
+	<name>koala-bpm-core</name>
+	<description>Koala BPM流程引擎核心项目，加载流程并提供WS API以供第三方系统调用</description>
+	<modules>
+		<module>koala-bpm-core-infra</module>
+		<module>koala-bpm-core-bizmodel</module>
+		<module>koala-bpm-core-application</module>
+		<module>koala-bpm-core-applicationImpl</module>
+		<module>koala-bpm-core-adapterApplication</module>
+		<module>koala-bpm-core-adapterApplicationImpl</module>
+		<module>koala-bpm-core-war</module>
+	</modules>
+	
+</project>

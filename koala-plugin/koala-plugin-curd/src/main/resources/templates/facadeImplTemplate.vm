@@ -1,0 +1,165 @@
+#set($package = ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})})
+package ${facadeImplClass.packageName};
+#set($domainClass = $facadeImplClass.entityModel.name)
+#set($variableName = ${domainClass.substring(0, 1).toLowerCase()} + ${domainClass.substring(1)})
+#set($currntVO = ${domainClass.concat("DTO")})
+#set($currntVOVariable = ${currntVO.substring(0, 1).toLowerCase()} + ${currntVO.substring(1)})
+#set($joinClause = "")
+#set($assembler = ${domainClass.concat("Assembler")})
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.text.MessageFormat;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.utils.Page;
+import org.dayatang.querychannel.QueryChannelService;
+import org.openkoala.koala.commons.InvokeResult;
+import ${dtoClass.packageName}.*;
+import ${facadeImplClass.packageName}.assembler.${entity.name}Assembler;
+import ${dtoClass.packageName.replaceAll("dto","")}${facadeImplClass.name.replaceAll("Impl","")};
+import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.name};
+
+import ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})}.*;
+
+@Named
+public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAll("Impl","")} {
+
+	@Inject
+	private ${applicationClass.name.replaceAll("Impl","")}  application;
+
+	private QueryChannelService queryChannel;
+
+    private QueryChannelService getQueryChannelService(){
+       if(queryChannel==null){
+          queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel");
+       }
+     return queryChannel;
+    }
+	
+	public InvokeResult get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		return InvokeResult.success(${assembler}.toDTO(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name})));
+	}
+	
+	public InvokeResult creat${domainClass}(${currntVO} ${currntVOVariable}) {
+		application.creat${domainClass}(${assembler}.toEntity(${currntVOVariable}));
+		return InvokeResult.success();
+	}
+	
+	public InvokeResult update${domainClass}(${currntVO} ${currntVOVariable}) {
+		application.update${domainClass}(${assembler}.toEntity(${currntVOVariable}));
+		return InvokeResult.success();
+	}
+	
+	public InvokeResult remove${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		application.remove${domainClass}(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}));
+		return InvokeResult.success();
+	}
+	
+	public InvokeResult remove${domainClass}s(${dtoClass.entityModel.singleIDFieldModel.simpleType}[] ${dtoClass.entityModel.singleIDFieldModel.name}s) {
+		Set<${domainClass}> ${variableName}s= new HashSet<${domainClass}>();
+		for (Long ${dtoClass.entityModel.singleIDFieldModel.name} : ${dtoClass.entityModel.singleIDFieldModel.name}s) {
+			${variableName}s.add(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}));
+		}
+		application.remove${domainClass}s(${variableName}s);
+		return InvokeResult.success();
+	}
+	
+	public List<${currntVO}> findAll${domainClass}() {
+		return ${assembler}.toDTOs(application.findAll${domainClass}());
+	}
+	
+	public Page<${currntVO}> pageQuery${domainClass}(${currntVO} queryVo, int currentPage, int pageSize) {
+		List<Object> conditionVals = new ArrayList<Object>();
+#set($jpql = "select _${variableName} from ${domainClass} _${variableName} ")
+#foreach(${relation} in ${facadeClass.relations})
+#set($relationModel = ${relation.relationModel})
+#set($relationType = ${relationModel.type})
+#set($entityName = ${relationModel.entityModel.name})
+#set($relationName = ${relation.name.substring(0, 1).toUpperCase()} + ${relation.name.substring(1)})
+#if(${relationType} == "ManyToOne" || ${relationType} == "OneToOne")
+#set($joinClause = $joinClause +  " left join _${variableName}.${relation.name} ")
+#end
+#end
+	   	StringBuilder jpql = new StringBuilder("${jpql} $!{joinClause} where 1=1 ");
+#foreach($field in ${entity.fields})
+#set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
+#if(${dtoClass.isPrimitiveType(${field.type})} && ${field.class.simpleName} != "PKFieldModel" && ${field.class.simpleName} != "VersionFieldModel")
+	   	if (queryVo.get${propertyName}() != null) {
+	   		jpql.append(" and _${variableName}.${field.name}=?");
+	   		conditionVals.add(queryVo.get${propertyName}());
+	   	}	
+#end
+#if(${dtoClass.isBooleanType(${field.type})})
+	   	if (queryVo.get${propertyName}() != null) {
+		   	jpql.append(" and _${variableName}.${field.name} is ?");
+		   	conditionVals.add(queryVo.get${propertyName}());
+	   	}	
+#end
+#if(${dtoClass.isStringType(${field.type})})
+	   	if (queryVo.get${propertyName}() != null && !"".equals(queryVo.get${propertyName}())) {
+	   		jpql.append(" and _${variableName}.${field.name} like ?");
+	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.get${propertyName}()));
+	   	}		
+#end	
+#if(${dtoClass.isDateType(${field.type})})
+	   	if (queryVo.get${propertyName}() != null) {
+	   		jpql.append(" and _${variableName}.${field.name} between ? and ? ");
+	   		conditionVals.add(queryVo.get${propertyName}());
+	   		conditionVals.add(queryVo.get${propertyName}End());
+	   	}	
+#end	
+#end
+        Page<${domainClass}> pages = getQueryChannelService()
+		   .createJpqlQuery(jpql.toString())
+		   .setParameters(conditionVals)
+		   .setPage(currentPage, pageSize)
+		   .pagedList();
+		   
+        return new Page<${currntVO}>(pages.getStart(), pages.getResultCount(),pageSize, ${assembler}.toDTOs(pages.getData()));
+	}
+	
+#foreach(${relation} in ${facadeClass.relations})
+#set($relationModel = ${relation.relationModel})
+#set($relationType = ${relationModel.type})
+#set($entityName = ${relationModel.entityModel.name})
+#set($relationName = ${relation.name.substring(0, 1).toUpperCase()} + ${relation.name.substring(1)})
+#if(${relationType} == "ManyToOne" || ${relationType} == "OneToOne")
+	public ${entityName}DTO find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		String jpql = "select e from ${domainClass} o right join o.${relation.name} e where o.${dtoClass.entityModel.singleIDFieldModel.name}=?";
+		${entityName} result = (${entityName}) getQueryChannelService().createJpqlQuery(jpql).setParameters(new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }).singleResult();
+		${entityName}DTO  dto = new ${entityName}DTO();
+		if (result != null) {
+			try {
+				BeanUtils.copyProperties(dto, result);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return dto;
+	}
+#end
+
+#if(${relationType} == "OneToMany" || ${relationType} == "ManyToMany")
+	public Page<${entityName}DTO> find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, int currentPage, int pageSize) {
+		List<${entityName}DTO> result = new ArrayList<${entityName}DTO>();
+		String jpql = "select e from ${domainClass} o right join o.${relation.name} e where o.${dtoClass.entityModel.singleIDFieldModel.name}=?";
+		Page<${entityName}> pages = getQueryChannelService().createJpqlQuery(jpql).setParameters(new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }).setPage(currentPage, pageSize).pagedList();
+        for (${entityName} entity : pages.getResult()) {
+            ${entityName}DTO dto = new ${entityName}DTO();
+            try {
+				BeanUtils.copyProperties(dto, entity);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+            result.add(dto);
+        }
+        return new Page<${entityName}DTO>(Page.getStartOfPage(currentPage, pageSize), pages.getResultCount(), pageSize, result);
+	}		
+#end
+#end
+	
+}

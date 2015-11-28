@@ -1,0 +1,102 @@
+package ${package};
+
+import java.util.Date;
+import java.sql.Timestamp;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Lob;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import org.openkoala.koala.commons.domain.KoalaLegacyEntity;
+import java.io.Serializable;
+import javax.persistence.EmbeddedId;
+
+/**
+ * Auto Generated Entity
+ * 
+ * @author Koala 
+ * 
+ */
+@Entity
+@Table(name="${tableName}")
+public class ${EntityName} extends KoalaLegacyEntity {
+
+   private static final long serialVersionUID = 1L;
+
+
+   #set($pkName = ${EntityName.substring(0, 1).toLowerCase()} + ${EntityName.substring(1)})
+   @EmbeddedId
+   private ${EntityName}PK ${pkName}PK; 
+
+#foreach ($column in $Columns)
+
+  #if($column.dataType==2004 || $column.dataType==2005)
+   @Lob
+  #end
+  @Column(name="$column.columnName")
+  private $column.type $column.name;
+  
+#end
+
+
+      public ${EntityName}PK get${EntityName}PK() {
+	     return ${pkName}PK;
+      }
+  
+       public void set${EntityName}PK(${EntityName}PK ${pkName}PK) {
+		  this.${pkName}PK = ${pkName}PK;
+       }
+
+
+#foreach ($column in $Columns)
+  
+  #set($propertyName = ${column.name.substring(0, 1).toUpperCase()} + ${column.name.substring(1)})
+  
+  #if($column.name!="id")
+  public $column.type get${propertyName}() {
+		return $column.name;
+  }
+  #end
+  public void set${propertyName}($column.type $column.name) {
+		this.$column.name = $column.name;
+  }
+  
+#end
+
+	public ${EntityName}PK getId() {
+		return ${pkName}PK;
+	}
+
+    @Override
+    public String[] businessKeys() {
+     // TODO Auto-generated method stub
+     return null;
+    }
+	
+	/**
+	 * 实现此方法，返回当前实体在数据库中是否存在
+	 */
+	public boolean existed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+    /**
+	 * 实现此方法，返回当前实体在数据库中是否不存在
+	 */
+	public boolean notExisted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+    /**
+	 * 实现此方法，返回当前实体某个属性中的某个值是否存在
+	 */
+	public boolean existed(String propertyName, Object propertyValue) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+}
