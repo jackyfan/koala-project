@@ -8,17 +8,13 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class KoalaEntityRepositoryJpa implements
-        EntityRepository {
+public class KoalaEntityRepositoryJpa implements EntityRepository {
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(KoalaEntityRepositoryJpa.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(KoalaEntityRepositoryJpa.class);
 
     public String getEntityManagerName() {
         return entityManagerName;
@@ -30,7 +26,6 @@ public class KoalaEntityRepositoryJpa implements
 
     private String entityManagerName;
 
-
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -38,7 +33,7 @@ public class KoalaEntityRepositoryJpa implements
     private EntityManager entityManager;
 
     public EntityManager getEntityManager() {
-        if(entityManager==null){
+        if (entityManager == null) {
             return InstanceFactory.getInstance(EntityManager.class, entityManagerName);
         }
         return entityManager;
@@ -63,13 +58,13 @@ public class KoalaEntityRepositoryJpa implements
 
     @Override
     public <T extends Entity> T save(T entity) {
-        if (existed(entity)==false || entity.notExisted()) {
+        if (existed(entity) == false || entity.notExisted()) {
 
             getEntityManager().persist(entity);
             LOGGER.info("create a entity: " + entity.getClass() + "/"
                     + entity.getId() + ".");
             return entity;
-        }else{
+        } else {
             entity = getEntityManager().merge(entity);
             LOGGER.info("update a entity: " + entity.getClass() + "/"
                     + entity.getId() + ".");
@@ -82,7 +77,7 @@ public class KoalaEntityRepositoryJpa implements
         if (id == null) {
             return false;
         }
-        if (id instanceof Number && ((Number)id).intValue() == 0) {
+        if (id instanceof Number && ((Number) id).intValue() == 0) {
             return false;
         }
         return true;
@@ -90,7 +85,6 @@ public class KoalaEntityRepositoryJpa implements
 
     /*
      * (non-Javadoc)
-     *
      * @see
      * org.dayatang.domain.EntityRepository#remove(org.dayatang.domain.Entity)
      */
@@ -103,7 +97,6 @@ public class KoalaEntityRepositoryJpa implements
 
     /*
      * (non-Javadoc)
-     *
      * @see org.dayatang.domain.EntityRepository#exists(java.io.Serializable)
      */
     @Override
@@ -115,7 +108,6 @@ public class KoalaEntityRepositoryJpa implements
 
     /*
      * (non-Javadoc)
-     *
      * @see org.dayatang.domain.EntityRepository#get(java.io.Serializable)
      */
     @Override
@@ -223,11 +215,11 @@ public class KoalaEntityRepositoryJpa implements
 
     @Override
     public <T> T getSingleResult(NamedQuery namedQuery) {
-		try {
-			return (T) getQuery(namedQuery).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+        try {
+            return (T) getQuery(namedQuery).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
